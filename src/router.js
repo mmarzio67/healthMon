@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import WelcomePage from "./components/welcome/welcome.vue";
 import DashboardPage from "./components/dashboard/dashboard.vue";
+import DailyHealthPage from "./components/activity/dailyhealthmon.vue";
 import SignupPage from "./components/auth/signup.vue";
 import SigninPage from "./components/auth/signin.vue";
 import store from "./store";
@@ -17,7 +18,18 @@ const routes = [
     path: "/dashboard",
     component: DashboardPage,
     beforeEnter(to, from, next) {
-      if (store.state.idToken) {
+      if (store.state.auth.idToken) {
+        next();
+      } else {
+        next("/signin");
+      }
+    },
+  },
+  {
+    path: "/dailyhealthmon",
+    component: DailyHealthPage,
+    beforeEnter(to, from, next) {
+      if (store.state.auth.idToken) {
         next();
       } else {
         next("/signin");
