@@ -32,17 +32,9 @@
             v-model.number="breathactive"
           />
         </div>
-        <div class="input-group">
+        <div class="input">
           <label for="hslept">Hours of Sleep:</label>
-          <input type="number" min="1" max="23" v-model.number="hslept" />
-          <span class="input-group-addon">:</span>
-          <input
-            type="number"
-            id="mslept"
-            min="0"
-            max="60"
-            v-model.number="mslept"
-          />
+          <input type="time" v-model="hslept" />
         </div>
         <div class="input">
           <label for="pulserest">Pulse at rest:</label>
@@ -95,7 +87,6 @@ export default {
       breathrest: null,
       breathactive: null,
       hslept: null,
-      mslept: null,
       pulserest: null,
       pulseactive: null,
       stress: null,
@@ -105,10 +96,10 @@ export default {
   },
   computed: {
     hourslept() {
-      const hours = this.hslept;
-      const minutes = this.mslept;
-      const timeslept = parseFloat(hours + "." + minutes);
-      return timeslept;
+      var hoursMinutes = this.hslept.split(/[.:]/);
+      var hours = parseInt(hoursMinutes[0], 10);
+      var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+      return hours + minutes / 60;
     },
   },
   created() {
