@@ -16,6 +16,8 @@ export default {
       globalAxios
         .post("/dailyhealthmon.json" + "?auth=" + store.state.auth.idToken, {
           weight: dailymonData.weight,
+          bfi: dailymonData.bfi,
+          imc: dailymonData.imc,
           waist: dailymonData.waist,
           spo2: dailymonData.spo2,
           breathrest: dailymonData.breathrest,
@@ -24,7 +26,8 @@ export default {
           pulserest: dailymonData.pulserest,
           pulseactive: dailymonData.pulseactive,
           stress: dailymonData.stress,
-          bodybatt: dailymonData.bodybatt,
+          bodybattU: dailymonData.bodybattU,
+          bodybattD: dailymonData.bodybattD,
           steps: dailymonData.steps,
           registerDate: regDate,
           userId: store.state.auth.userId,

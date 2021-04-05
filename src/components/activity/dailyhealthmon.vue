@@ -4,7 +4,15 @@
       <form @submit.prevent="onSubmit">
         <div class="input">
           <label for="weight">Weight:</label>
-          <input type="number" id="weight" v-model="weight" />
+          <input type="number" step="0.1" id="weight" v-model="weight" />
+        </div>
+        <div class="input">
+          <label for="bfi">Body fat:</label>
+          <input type="number" step="0.1" id="bfi" v-model="bfi" />
+        </div>
+        <div class="input">
+          <label for="imc">IMC:</label>
+          <input type="number" step="0.1" id="imc" v-model="imc" />
         </div>
         <div class="input">
           <label for="waist">Waist:</label>
@@ -61,9 +69,14 @@
           <input type="number" id="stress" v-model.number="stress" />
         </div>
         <div class="input">
-          <label for="bodybatt">Body Battery</label>
-          <input type="number" id="bodybatt" v-model.number="bodybatt" />
+          <label for="bodybattU">Body Battery UP (+)</label>
+          <input type="number" id="bodybatt" v-model.number="bodybattU" />
         </div>
+        <div class="input">
+          <label for="bodybattD">Body Battery DOWN (-)</label>
+          <input type="number" id="bodybatt" v-model.number="bodybattD" />
+        </div>
+
         <div class="input">
           <label for="steps">Steps</label>
           <input type="number" id="steps" v-model.number="steps" />
@@ -82,6 +95,8 @@ export default {
   data() {
     return {
       weight: null,
+      bfi: null,
+      imc: null,
       waist: null,
       spo2: null,
       breathrest: null,
@@ -90,7 +105,8 @@ export default {
       pulserest: null,
       pulseactive: null,
       stress: null,
-      bodybatt: null,
+      bodybattU: null,
+      bodybattD: null,
       steps: null,
     };
   },
@@ -106,9 +122,33 @@ export default {
     this.$store.dispatch("fetchUser");
   },
   methods: {
+    getLastHealthEntry() {
+      axios({
+        method: "get",
+        url: "/tasks/" + this.id + "/",
+      }).then((response) => {
+        console.log(response);
+        this.weight=response.data.weight,
+        this.bfi=response.data.bfi,
+        this.imc=response.data.imc,
+        this.waist=response.data.waist,
+        this.spo2=response.data.spo2,
+        this.breathrest=response.data.breathrest,
+        this.breathactive=response.data.breathactive,
+        this.hslept=response.data.hslept,
+        this.pulserest=response.data.pulserest,
+        this.pulseactive=response.data.pulseactive,
+        this.stress=response.data.stress,
+        this.bodybattU=response.data.bodybattU,
+        this.bodybattD=response.data.bodybattD,
+        this.steps=response.data.steps
+      });
+    },
     onSubmit() {
       const formData = {
         weight: this.weight,
+        bfi: this.bfi,
+        imc: this.imc,
         waist: this.waist,
         spo2: this.spo2,
         breathrest: this.breathrest,
@@ -117,7 +157,8 @@ export default {
         pulserest: this.pulserest,
         pulseactive: this.pulseactive,
         stress: this.stress,
-        bodybatt: this.bodybatt,
+        bodybattU: this.bodybattU,
+        bodybattD: this.bodybattD,
         steps: this.steps,
       };
       console.log("onSubmit:", formData);
