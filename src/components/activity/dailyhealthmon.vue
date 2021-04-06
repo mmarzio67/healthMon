@@ -1,6 +1,10 @@
 <template>
   <div id="Activity">
     <div class="activity-form">
+      
+      <div class="submit">
+          <button type="submit" @click="updateLastHealthValues()">Last health entry</button>
+        </div>
       <form @submit.prevent="onSubmit">
         <div class="input">
           <label for="weight">Weight:</label>
@@ -90,7 +94,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
@@ -120,30 +123,10 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUser");
+    this.$store.dispatch("lastHealthEntry");
+    
   },
   methods: {
-    getLastHealthEntry() {
-      axios({
-        method: "get",
-        url: "/tasks/" + this.id + "/",
-      }).then((response) => {
-        console.log(response);
-        this.weight=response.data.weight,
-        this.bfi=response.data.bfi,
-        this.imc=response.data.imc,
-        this.waist=response.data.waist,
-        this.spo2=response.data.spo2,
-        this.breathrest=response.data.breathrest,
-        this.breathactive=response.data.breathactive,
-        this.hslept=response.data.hslept,
-        this.pulserest=response.data.pulserest,
-        this.pulseactive=response.data.pulseactive,
-        this.stress=response.data.stress,
-        this.bodybattU=response.data.bodybattU,
-        this.bodybattD=response.data.bodybattD,
-        this.steps=response.data.steps
-      });
-    },
     onSubmit() {
       const formData = {
         weight: this.weight,
@@ -164,7 +147,28 @@ export default {
       console.log("onSubmit:", formData);
       this.$store.dispatch("dailyhealthmon", formData);
     },
+    updateLastHealthValues(){ 
+    const lhr = this.$store.getters["getLastHealthEntry"];
+    console.log(lhr)
+    this.weight=lhr.weight,
+    this.bfi=lhr.bfi,
+    this.imc=lhr.imc,
+    this.waist=lhr.waist,
+    this.spo2=lhr.spo2,
+    this.breathrest=lhr.breathrest,
+    this.breathactive=lhr.breathactive,
+    this.hslept=lhr.hslept,
+    this.pulserest=lhr.pulserest,
+    this.pulseactive=lhr.pulseactive,
+    this.stress=lhr.stress,
+    this.bodybattU=lhr.bodybattU,
+    this.bodybattD=lhr.bodybattD,
+    this.steps=lhr.steps
+    }
   },
+  sortByDate(){
+
+  }
 };
 </script>
 

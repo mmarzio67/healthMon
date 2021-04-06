@@ -3,12 +3,17 @@ import store from "../../store";
 import router from "../../router";
 
 export default {
-  state: {},
-  mutations: {},
+  state: {
+    lastHealthEntry: []
+  },
+  mutations: {
+    SET_LASTRECORD(state, lr) {
+        state.lastHealthEntry = lr;
+      },
+  },
   actions: {
-    dailyhealthmon({ commit, state }, dailymonData) {
+    dailyhealthmon({}, dailymonData) {
       const regDate = new Date();
-
       if (!store.state.auth.idToken) {
         return;
       }
@@ -38,6 +43,37 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    lastHealthEntry({commit}) {
+      console.log("[action:lastHealthEntry]")
+      globalAxios
+        //.get('/dailyhealthmon.json?orderBy="bodybatt"&auth=' + store.state.auth.idToken
+        .get('/dailyhealthmon.json' + '?auth=' + store.state.auth.idToken
+        ).then((res) => {   
+          console.log(res);
+          const data = res.data;
+          const hrs = [];
+          for (let key in data) {
+            const hr = data[key];
+            hr.id = key;
+            hrs.push(hr);
+          }
+          console.log(hrs);
+          // sort by registerDate ascending
+          const lhr= hrs.sort(function(a, b){
+            return a.registerDate - b.registerDate;
+          });
+          // count the number of records
+          const nr=lhr.length
+          console.log(nr)
+          // update the state with the newest record
+          commit("SET_LASTRECORD", lhr[nr-1]);         
+      })
+      .catch((error) => console.log(error));
+    }
   },
-  getters: {},
-};
+  getters: {
+    getLastHealthEntry: (state) => {
+      return state.lastHealthEntry;
+    },
+  }
+}
