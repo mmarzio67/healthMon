@@ -73,6 +73,7 @@ export default {
           dispatch("setLogoutTimer", res.data.expiresIn);
         })
         .catch((error) => console.log(error));
+        router.push("/dashboard");
     },
     tryAutoLogin({ commit }) {
       const token = localStorage.getItem("token");
