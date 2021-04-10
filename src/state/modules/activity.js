@@ -4,12 +4,16 @@ import router from "../../router";
 
 export default {
   state: {
-    lastHealthEntry: []
+    lastHealthEntry: [],
+    allHealthEntries:[]
   },
   mutations: {
     SET_LASTRECORD(state, lr) {
         state.lastHealthEntry = lr;
-      },
+    },
+    SET_ALLHEALTHRECORDS(state, ahrs) {
+        state.allHealthEntries = ahrs;
+    },
   },
   actions: {
     dailyhealthmon({}, dailymonData) {
@@ -45,6 +49,7 @@ export default {
     },
     lastHealthEntry({commit}) {
       console.log("[action:lastHealthEntry]")
+      // use the allHealthEntries state instead to call all the records again
       globalAxios
         //.get('/dailyhealthmon.json?orderBy="bodybatt"&auth=' + store.state.auth.idToken
         .get('/dailyhealthmon.json' + '?auth=' + store.state.auth.idToken
@@ -69,11 +74,38 @@ export default {
           commit("SET_LASTRECORD", lhr[nr-1]);         
       })
       .catch((error) => console.log(error));
+    },
+    allHealthEntries({commit}) {
+      console.log("[action: allHealthEntries]")
+      globalAxios
+        //.get('/dailyhealthmon.json?orderBy="bodybatt"&auth=' + store.state.auth.idToken
+        .get('/dailyhealthmon.json' + '?auth=' + store.state.auth.idToken
+        ).then((res) => {   
+          //console.log(res);
+          const data = res.data;
+          const hrs = [];
+          for (let key in data) {
+            const hr = data[key];
+            hr.id = key;
+            hrs.push(hr);
+          }
+          
+          // sort by registerDate ascending
+          const ahrs= hrs.sort(function(a, b){
+            return a.registerDate - b.registerDate;
+          });
+          console.log(ahrs);
+          commit("SET_ALLHEALTHRECORDS", ahrs);         
+      })
+      .catch((error) => console.log(error));
     }
   },
   getters: {
     getLastHealthEntry: (state) => {
       return state.lastHealthEntry;
+    },
+    getAllHealthEntries: (state) => {
+      return state.allHealthEntries;
     },
   }
 }

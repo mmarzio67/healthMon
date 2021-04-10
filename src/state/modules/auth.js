@@ -71,8 +71,10 @@ export default {
             userId: res.data.localId,
           });
           dispatch("setLogoutTimer", res.data.expiresIn);
+          dispatch("allHealthEntries")
         })
         .catch((error) => console.log(error));
+        router.push("/dashboard");
     },
     tryAutoLogin({ commit }) {
       const token = localStorage.getItem("token");
