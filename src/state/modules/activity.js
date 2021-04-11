@@ -78,7 +78,6 @@ export default {
     allHealthEntries({commit}) {
       console.log("[action: allHealthEntries]")
       globalAxios
-        //.get('/dailyhealthmon.json?orderBy="bodybatt"&auth=' + store.state.auth.idToken
         .get('/dailyhealthmon.json' + '?auth=' + store.state.auth.idToken
         ).then((res) => {   
           //console.log(res);
@@ -89,12 +88,11 @@ export default {
             hr.id = key;
             hrs.push(hr);
           }
-          
           // sort by registerDate ascending
           const ahrs= hrs.sort(function(a, b){
             return a.registerDate - b.registerDate;
           });
-          console.log(ahrs);
+          console.log("[allHealthEntries]:" + JSON.stringify(ahrs))
           commit("SET_ALLHEALTHRECORDS", ahrs);         
       })
       .catch((error) => console.log(error));

@@ -1,25 +1,25 @@
 <template>
   <div id="dashboard">
-    <h1>That's the dashboard!</h1>
-    <p>You should only get here if you're authenticated!</p>
-    <p v-if="email">Your email address: {{ email }}</p>
-    <p>your body battery is: {{bodybatt}}</p>
+    <h1>That's the Health Dashboard!</h1>
+    <p>You are here because you are authenticated with:</p>
+    <p v-if="email">email address: {{ email }}</p>
     <div>
-      <PlanetChart />
+      <BodyBattChart />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import PlanetChart from '../charts/PlanetChart.vue'
+//import PlanetChart from '../charts/PlanetChart.vue'
+import BodyBattChart from '../charts/BodyBattChart.vue'
 export default {
   components: {
-    PlanetChart
+    BodyBattChart
   },
   data() {
     return {
-      bodybatt: 0
+      bodybatt: null
     }  
   },
   computed: {
@@ -30,17 +30,23 @@ export default {
   created() {
     this.$store.dispatch("fetchUser"); 
   },
-
   mounted() {
     this.setChartHealthTrend()
   },
 
   methods: {
     setChartHealthTrend(){
-    const ahr = this.$store.getters["getAllHealthEntries"];
-    console.log("[setChartHealthTrend, body battery value]: " + ahr[0].bodybatt)
-    this.bodybatt= ahr[0].bodybatt
-    //this.renderChart(this.chartdata, this.options)
+      this.$store.dispatch("prepHealthGraph")
+      
+      /*
+      const ahr = this.$store.getters["getAllHealthEntries"];
+      console.log("[setChartHealthTrend, register date]: " + ahr)
+      this.bodybatt= ahr[0].bodybatt
+      console.log("[bodybatt-data] normal: " + ahr)
+      // reduce the ahr fields (rahr) to registerDate and BodyBatt fields
+      const rahr = ahr.map(( {registerDate, bodybatt} ) => ({registerDate, bodybatt}))
+      console.log("[bodybatt-data] reduced: " + rahr[0])
+      */
     }
   }
 };
