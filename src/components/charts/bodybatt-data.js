@@ -9,14 +9,21 @@ export const bodyBattData = {
         data: [],
         backgroundColor: "rgba(54,73,93,.5)",
         borderColor: "#36495d",
-        borderWidth: 3
+        borderWidth: 5
       },
       {
         label: "Body Battery Down",
         data: [],
         backgroundColor: "rgba(71, 183,132,.5)",
         borderColor: "#47b784",
-        borderWidth: 3
+        borderWidth: 5
+      },
+      {
+        label: "Body Battery Trend",
+        data: [],
+        backgroundColor: "rgba(255, 230, 255,.5)",
+        borderColor: "#ff0066",
+        borderWidth: 5
       }
     ]
   },
