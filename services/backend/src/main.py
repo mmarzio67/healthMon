@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.database.register import register_tortoise
+from src.database.config import TORTOISE_ORM
+
 
 
 app = FastAPI()
@@ -12,6 +15,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Call the function for registering and configuring Tortoise with the essential parameters
+register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 @app.get("/")
 def home():
-    return "Hello, World!"
+    return "Hello, World from FastAPI backend!"
