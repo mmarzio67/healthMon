@@ -19,8 +19,8 @@ router = APIRouter()
     response_model=List[SportActivityOutSchema],
     dependencies=[Depends(get_current_user)],
 )
-async def get_notes():
-    return await crud.get_notes()
+async def get_sportactivities():
+    return await crud.get_sportactivities()
 
 
 @router.get(
@@ -28,23 +28,23 @@ async def get_notes():
     response_model=SportActivityOutSchema,
     dependencies=[Depends(get_current_user)],
 )
-async def get_note(spa_id: int) -> SportActivityOutSchema:
+async def get_sportactivity(spa_id: int) -> SportActivityOutSchema:
     try:
-        return await crud.get_note(spa_id)
+        return await crud.get_sportactivity(spa_id)
     except DoesNotExist:
         raise HTTPException(
             status_code=404,
-            detail="Note does not exist",
+            detail="Sport activity does not exist",
         )
 
 
 @router.post(
     "/sportactivity", response_model=SportActivityOutSchema, dependencies=[Depends(get_current_user)]
 )
-async def create_note(
-    note: SportActivityInSchema, current_user: UserOutSchema = Depends(get_current_user)
+async def create_sportactivity(
+    sportactivity: SportActivityInSchema, current_user: UserOutSchema = Depends(get_current_user)
 ) -> SportActivityOutSchema:
-    return await crud.create_note(note, current_user)
+    return await crud.create_sportactivity(sportactivity, current_user)
 
 
 @router.patch(
@@ -53,12 +53,12 @@ async def create_note(
     response_model=SportActivityOutSchema,
     responses={404: {"model": HTTPNotFoundError}},
 )
-async def update_note(
+async def update_sportactivity(
     spa_id: int,
     sportactivity: UpdateSportActivity,
     current_user: UserOutSchema = Depends(get_current_user),
 ) -> SportActivityOutSchema:
-    return await crud.update_note(spa_id, sportactivity, current_user)
+    return await crud.update_sportactivity(spa_id, sportactivity, current_user)
 
 
 @router.delete(
@@ -67,7 +67,7 @@ async def update_note(
     responses={404: {"model": HTTPNotFoundError}},
     dependencies=[Depends(get_current_user)],
 )
-async def delete_note(
+async def delete_sportactivity(
     spa_id: int, current_user: UserOutSchema = Depends(get_current_user)
 ):
-    return await crud.delete_note(spa_id, current_user)
+    return await crud.delete_sportactivity(spa_id, current_user)

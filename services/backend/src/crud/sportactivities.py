@@ -6,15 +6,15 @@ from src.schemas.sportactivities import SportActivityOutSchema
 from src.schemas.token import Status
 
 
-async def get_sportActivity():
+async def get_sportactivities():
     return await SportActivityOutSchema.from_queryset(SportActivities.all())
 
 
-async def get_sportActivity(sportActivity_id) -> SportActivityOutSchema:
+async def get_sportactivity(sportActivity_id) -> SportActivityOutSchema:
     return await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
 
 
-async def create_sportActivity(sportActivity, current_user) -> SportActivityOutSchema:
+async def create_sportactivity(sportActivity, current_user) -> SportActivityOutSchema:
     sportActivity_dict = sportActivity.dict(exclude_unset=True)
     sportActivity_dict["athlete_id"] = current_user.id
     sportActivity_obj = await SportActivities.create(**sportActivity_dict)
@@ -22,7 +22,7 @@ async def create_sportActivity(sportActivity, current_user) -> SportActivityOutS
 
 
 # only the athlete that performed the activity can update it
-async def update_sportActivity(sportActivity_id, sportActivity, current_user) -> SportActivityOutSchema:
+async def update_sportactivity(sportActivity_id, sportActivity, current_user) -> SportActivityOutSchema:
     try:
         db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
     except DoesNotExist:
@@ -35,7 +35,7 @@ async def update_sportActivity(sportActivity_id, sportActivity, current_user) ->
     raise HTTPException(status_code=403, detail=f"Not authorized to update")
 
 # only the athlete that performed the activity can update it
-async def delete_sportActivity(sportActivity_id, current_user) -> Status:
+async def delete_sportactivity(sportActivity_id, current_user) -> Status:
     try:
         db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
     except DoesNotExist:

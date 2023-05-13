@@ -10,7 +10,7 @@ from src.database.config import TORTOISE_ORM
 Tortoise.init_models(["src.database.models"], "models")
 
 """
-import 'from src.routes import users, notes' must be after 'Tortoise.init_models'
+import 'from src.routes import users, sportactivities' must be after 'Tortoise.init_models'
 why?
 https://stackoverflow.com/questions/65531387/tortoise-orm-for-python-no-returns-relations-of-entities-pyndantic-fastapi
 """

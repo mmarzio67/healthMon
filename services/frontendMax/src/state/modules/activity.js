@@ -2,6 +2,8 @@ import globalAxios from "axios";
 import store from "../../store";
 import router from "../../router";
 
+// TODO: refactor like the users.js (modern vuex)
+
 export default {
   state: {
     lastHealthEntry: []

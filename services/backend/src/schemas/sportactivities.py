@@ -8,12 +8,12 @@ from src.database.models import SportActivities
 # Create pydantic models from tortoise models
 # schema for creating new sport activities
 SportActivityInSchema = pydantic_model_creator(
-    SportActivities, name="SportActivityIn", exclude=["author_id"], exclude_readonly=True)
+    SportActivities, name="SportActivityIn", exclude=["athlete_id"], exclude_readonly=True)
 
 # schema for creating new retrieving sport activities
 SportActivityOutSchema = pydantic_model_creator(
     SportActivities, name="SportActivity", exclude =[
-      "modified_at", "author.password", "author.created_at", "author.modified_at"
+      "modified_at", "athlete.password", "athlete.created_at", "athlete.modified_at"
     ]
 )
 
