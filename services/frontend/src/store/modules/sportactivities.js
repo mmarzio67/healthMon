@@ -12,7 +12,7 @@ const getters = {
 
 const actions = {
   async createSportactivity({dispatch}, sportactivity) {
-    await axios.post('sportactivity', sportactivity);
+    await axios.post('sportactivities', sportactivity);
     await dispatch('getSportactivities');
   },
   async getSportactivities({commit}) {

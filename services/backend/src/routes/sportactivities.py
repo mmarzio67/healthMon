@@ -13,7 +13,6 @@ from src.schemas.users import UserOutSchema
 
 router = APIRouter()
 
-
 @router.get(
     "/sportactivities",
     response_model=List[SportActivityOutSchema],
@@ -39,7 +38,7 @@ async def get_sportactivity(spa_id: int) -> SportActivityOutSchema:
 
 
 @router.post(
-    "/sportactivity", response_model=SportActivityOutSchema, dependencies=[Depends(get_current_user)]
+    "/sportactivities", response_model=SportActivityOutSchema, dependencies=[Depends(get_current_user)]
 )
 async def create_sportactivity(
     sportactivity: SportActivityInSchema, current_user: UserOutSchema = Depends(get_current_user)

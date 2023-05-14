@@ -34,6 +34,7 @@ export default defineComponent({
     ...mapActions(['viewSportactivity', 'deleteSportactivity']),
     async removeSportactivity() {
       try {
+        //console.log("[RemoveSportActivity@SportActivityView] id: ", this.id)
         await this.deleteSportactivity(this.id);
         this.$router.push('/dashboard');
       } catch (error) {

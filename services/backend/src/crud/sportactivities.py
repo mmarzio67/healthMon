@@ -1,3 +1,4 @@
+import logging
 from fastapi import HTTPException
 from tortoise.exceptions import DoesNotExist
 
@@ -10,8 +11,8 @@ async def get_sportactivities():
     return await SportActivityOutSchema.from_queryset(SportActivities.all())
 
 
-async def get_sportactivity(sportActivity_id) -> SportActivityOutSchema:
-    return await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
+async def get_sportactivity(spa_id) -> SportActivityOutSchema:
+    return await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=spa_id))
 
 
 async def create_sportactivity(sportActivity, current_user) -> SportActivityOutSchema:
@@ -22,29 +23,30 @@ async def create_sportactivity(sportActivity, current_user) -> SportActivityOutS
 
 
 # only the athlete that performed the activity can update it
-async def update_sportactivity(sportActivity_id, sportActivity, current_user) -> SportActivityOutSchema:
+async def update_sportactivity(spa_id, sportActivity, current_user) -> SportActivityOutSchema:
     try:
-        db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
+        db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=spa_id))
     except DoesNotExist:
-        raise HTTPException(status_code=404, detail=f"Sport activity {sportActivity_id} not found")
+        raise HTTPException(status_code=404, detail=f"Sport activity {spa_id} not found")
 
     if db_sportActivity.athlete.id == current_user.id:
-        await SportActivities.filter(id=sportActivity_id).update(**sportActivity.dict(exclude_unset=True))
-        return await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
+        await SportActivities.filter(id=spa_id).update(**sportActivity.dict(exclude_unset=True))
+        return await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=spa_id))
 
     raise HTTPException(status_code=403, detail=f"Not authorized to update")
 
 # only the athlete that performed the activity can update it
-async def delete_sportactivity(sportActivity_id, current_user) -> Status:
+async def delete_sportactivity(spa_id, current_user) -> Status:
     try:
-        db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=sportActivity_id))
+        db_sportActivity = await SportActivityOutSchema.from_queryset_single(SportActivities.get(id=spa_id))
+        #logging.debug('Deleting sport activity: ', db_sportActivity)
     except DoesNotExist:
-        raise HTTPException(status_code=404, detail=f"Sport activity {sportActivity_id} not found")
+        raise HTTPException(status_code=404, detail=f"Sport activity {spa_id} not found")
 
     if db_sportActivity.athlete.id == current_user.id:
-        deleted_count = await SportActivities.filter(id=sportActivity_id).delete()
+        deleted_count = await SportActivities.filter(id=spa_id).delete()
         if not deleted_count:
-            raise HTTPException(status_code=404, detail=f"Sport actvity {sportActivity_id} not found")
-        return Status(f"Deleted sport activity {sportActivity_id}")
+            raise HTTPException(status_code=404, detail=f"Sport actvity {spa_id} not found")
+        return Status(f"Deleted sport activity {spa_id}")
 
     raise HTTPException(status_code=403, detail=f"Not authorized to delete")

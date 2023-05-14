@@ -61,9 +61,15 @@ export default defineComponent({
         title: '',
         content: '',
       },
+      // Create an object property used for cloning (STEP 2)
+      formFieldsCopy: {},
     };
   },
+  // mounted() {
+  //   this.formFieldsCopy = { ...this.formFields };
+  // },
   created: function() {
+    // Create an object property used for cloning
     return this.$store.dispatch('getSportactivities');
   },
   computed: {
@@ -71,9 +77,16 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(['createSportactivity']),
+    // Write the function to reset the form
+    resetFormFields() {
+      //this.formFields = { ...this.formFieldsCopy };
+          this.$refs.form.reset();
+    },
     async submit() {
       await this.createSportactivity(this.form);
-    },
+      // call the reset function to clear the form
+      this.resetFormFields();
+    },    
   },
 });
 </script>

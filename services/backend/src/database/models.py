@@ -13,7 +13,7 @@ class SportActivities(models.Model):
     id = fields.IntField(pk=True)
     title = fields.CharField(max_length=225)
     content = fields.TextField()
-    athlete = fields.ForeignKeyField("models.Users", related_name="sportactivity")
+    athlete = fields.ForeignKeyField("models.Users", related_name="sportActivity")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 
