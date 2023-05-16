@@ -1,8 +1,8 @@
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-from src.database.models import Users
+from src.database.db import users as Users 
 
-# Create pydantic models from tortoise models
+# Create pydantic models from sqlalchemy models
 
 # schema for creating new users
 UserInSchema = pydantic_model_creator(
