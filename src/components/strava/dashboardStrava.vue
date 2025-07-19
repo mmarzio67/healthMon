@@ -1,21 +1,20 @@
 <template>
   <div id="dashboard">
-    <h1>That's the Health Dashboard!</h1>
-    <p>You are here because you are authenticated with:</p>
+    <h1>That's the Strava Activity Dashboard!</h1>
+    <p>Only Strava authenticated users can access this page</p>
     <p v-if="email">email address: {{ email }}</p>
     <div>
-      <BodyBattChart />
+      <StravaChart />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-//import PlanetChart from '../charts/PlanetChart.vue'
-import BodyBattChart from '../charts/BodyBattChart.vue'
+import StravaChart from '../charts/StravaChart.vue'
 export default {
   components: {
-    BodyBattChart
+    StravaChart
   },
   data() {
     return {

@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import WelcomePage from "./components/welcome/welcome.vue";
 import DashboardPage from "./components/dashboard/dashboard.vue";
 import DailyHealthPage from "./components/activity/dailyhealthmon.vue";
+import DashboardStrava from "./components/strava/dashboardStrava.vue";
 import SignupPage from "./components/auth/signup.vue";
 import SigninPage from "./components/auth/signin.vue";
 import store from "./store";
@@ -28,6 +29,17 @@ const routes = [
   {
     path: "/dailyhealthmon",
     component: DailyHealthPage,
+    beforeEnter(to, from, next) {
+      if (store.state.auth.idToken) {
+        next();
+      } else {
+        next("/signin");
+      }
+    },
+  },
+  {
+    path: "/stravaDashboard",
+    component: DashboardStrava,
     beforeEnter(to, from, next) {
       if (store.state.auth.idToken) {
         next();

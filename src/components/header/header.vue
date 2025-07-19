@@ -15,6 +15,9 @@
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
         <li v-if="auth">
+          <router-link to="/stravaDashboard">Strava</router-link>
+        </li>
+        <li v-if="auth">
           <router-link to="/dailyhealthmon">Daily Health</router-link>
         </li>
         <li v-if="auth">
